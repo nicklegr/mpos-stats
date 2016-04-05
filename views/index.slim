@@ -1,9 +1,15 @@
 h1 monacoin
 
-table.table style='width: 80%'
+p
+  | MONA/JPY (BID) = ¥
+  = sprintf("%.1f", @mona_jpy_bid_low)
+
+table.table style='width: 100%'
   thead
     tr
       td time
+      td est(hour)
+      td est(day)
       td total
       td hour
       td day
@@ -13,6 +19,8 @@ table.table style='width: 80%'
   - @earnings.each do |e|
     tr
       td= e.created_at.strftime('%Y/%m/%d %H:%M:%S')
+      td= "¥#{(e.hour * 24 * 30 * @mona_jpy_bid_low).to_i}"
+      td= "¥#{(e.day * 30 * @mona_jpy_bid_low).to_i}"
       td
         b= e.total
       td= e.hour
