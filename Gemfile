@@ -13,3 +13,6 @@ gem 'bson_ext'
 gem 'pry'
 
 gem 'clockwork'
+
+gem 'mechanize'
+gem 'nokogiri'
