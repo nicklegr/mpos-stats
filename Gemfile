@@ -1,9 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'sinatra'
-gem 'sinatra-reloader'
-# gem 'thin' # Macのboot2dockerだと動かない
-gem 'slim'
+group :web do
+  gem 'sinatra'
+  gem 'sinatra-reloader'
+  # gem 'thin' # Macのboot2dockerだと動かない
+  gem 'slim'
+end
 
 gem 'mongoid'
 gem 'bson_ext'
