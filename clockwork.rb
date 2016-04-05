@@ -5,6 +5,8 @@ Bundler.require
 
 require "logger"
 
+require_relative "db"
+
 class Work
   def self.crawl
     config = YAML.load_file('config.yml')
@@ -22,7 +24,16 @@ class Work
     doc = Nokogiri::HTML(agent.page.body)
     earnings = parse_earnings(doc)
 
-    pp earnings
+    # pp earnings
+
+    Earning.create(
+      total: earnings[:summary][:credit],
+      hour: earnings[:sorted_by_time][:last_hour][:credit],
+      day: earnings[:sorted_by_time][:last_day][:credit],
+      week: earnings[:sorted_by_time][:last_week][:credit],
+      month: earnings[:sorted_by_time][:last_month][:credit],
+      year: earnings[:sorted_by_time][:last_year][:credit],
+      )
   end
 
   def self.parse_earnings(doc)
@@ -78,4 +89,4 @@ module Clockwork
 end
 
 # debug
-Work.crawl()
+# Work.crawl()
