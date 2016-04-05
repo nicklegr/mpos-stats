@@ -1,6 +1,22 @@
-.starter-template
-  h1 Bootstrap starter template
-  p.lead
-    | Use this document as a way to quickly start any new project.
-    br/
-    | All you get is this text and a mostly barebones HTML document.
+h1 monacoin
+
+table.table style='width: 80%'
+  thead
+    tr
+      td time
+      td total
+      td hour
+      td day
+      td week
+      td month
+      td year
+  - @earnings.each do |e|
+    tr
+      td= e.created_at.strftime('%Y/%m/%d %H:%M:%S')
+      td
+        b= e.total
+      td= e.hour
+      td= e.day
+      td= e.week
+      td= e.month
+      td= e.year
