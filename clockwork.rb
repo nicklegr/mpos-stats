@@ -77,7 +77,15 @@ end
 
 module Clockwork
   def self.crawl
-    Work.crawl
+    5.times do
+      begin
+        Work.crawl
+        break
+      rescue
+        puts "retrying..."
+        sleep(60)
+      end
+    end
   end
 
   handler do |job|
