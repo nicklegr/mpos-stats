@@ -4,3 +4,9 @@ production:
       database: main
       hosts:
         - mongodb:27017
+development:
+  sessions:
+    default:
+      database: mpos-stats
+      hosts:
+        - localhost:27017

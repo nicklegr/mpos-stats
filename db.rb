@@ -17,11 +17,11 @@ class Earning
   index({ created_at: 1 }, { name: "created_at_index" })
 end
 
-Mongoid.load!("mongoid.yml", :production)
+Mongoid.load!("mongoid.yml", ENV["ENV"] || :development)
 
-# if development?
-#   Mongoid.logger.level = Logger::DEBUG
-#   Moped.logger.level = Logger::DEBUG
-# end
+if !ENV["ENV"]
+  Mongoid.logger.level = Logger::DEBUG
+  Moped.logger.level = Logger::DEBUG
+end
 
 Earning.create_indexes
