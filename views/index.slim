@@ -10,6 +10,8 @@ table.table style='width: 100%'
       td time
       td est(hour)
       td est(day)
+      td est(week)
+      td est(month)
       td total
       td hour
       td day
@@ -21,6 +23,8 @@ table.table style='width: 100%'
       td= e.created_at.strftime('%Y/%m/%d %H:%M')
       td= yen(e.hour * 24 * 30 * @mona_jpy_bid_low)
       td= yen(e.day * 30 * @mona_jpy_bid_low)
+      td= yen(e.week * 30 / 7 * @mona_jpy_bid_low)
+      td= yen(e.month * @mona_jpy_bid_low)
       td
         b= to_s(e.total, 2)
       td= to_s(e.hour, 2)
