@@ -15,3 +15,13 @@ get "/" do
 
   slim :index
 end
+
+helpers do
+  def yen(value, digits = 0)
+    sprintf("¥%.#{digits}f", value)
+  end
+
+  def to_s(value, digits)
+    sprintf("%.#{digits}f", value)
+  end
+end

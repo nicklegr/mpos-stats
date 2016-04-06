@@ -1,8 +1,8 @@
 h1 monacoin
 
 p
-  | MONA/JPY (BID) = ¥
-  = sprintf("%.1f", @mona_jpy_bid_low)
+  | MONA/JPY (BID) = 
+  = yen(@mona_jpy_bid_low, 1)
 
 table.table style='width: 100%'
   thead
@@ -18,13 +18,13 @@ table.table style='width: 100%'
       td year
   - @earnings.each do |e|
     tr
-      td= e.created_at.strftime('%Y/%m/%d %H:%M:%S')
-      td= "¥#{(e.hour * 24 * 30 * @mona_jpy_bid_low).to_i}"
-      td= "¥#{(e.day * 30 * @mona_jpy_bid_low).to_i}"
+      td= e.created_at.strftime('%Y/%m/%d %H:%M')
+      td= yen(e.hour * 24 * 30 * @mona_jpy_bid_low)
+      td= yen(e.day * 30 * @mona_jpy_bid_low)
       td
-        b= e.total
-      td= e.hour
-      td= e.day
-      td= e.week
-      td= e.month
-      td= e.year
+        b= to_s(e.total, 2)
+      td= to_s(e.hour, 2)
+      td= to_s(e.day, 2)
+      td= to_s(e.week, 2)
+      td= to_s(e.month, 2)
+      td= to_s(e.year, 2)
