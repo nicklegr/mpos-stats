@@ -84,9 +84,9 @@ module Clockwork
     self.send(job.to_sym)
   end
 
-  every(1.hour, "crawl", :at => "**:00")
-  # every(30.second, "crawl")
+  if ENV["ENV"] == "production"
+    every(1.hour, "crawl", :at => "**:00")
+  else
+    every(30.second, "crawl")
+  end
 end
-
-# debug
-# Work.crawl()

@@ -5,8 +5,10 @@ web:
     - mongodb
   ports:
     - "80:80"
-  # environment:
-  #   VIRTUAL_HOST: hoge.example.com
+  environment:
+    ENV: development
+    # ENV: production
+    # VIRTUAL_HOST: hoge.example.com
   # restart: always
 
 clockwork:
@@ -14,6 +16,9 @@ clockwork:
   command: bundle exec clockwork clockwork.rb
   links:
     - mongodb
+  environment:
+    ENV: development
+    # ENV: production
   # restart: always
 
 mongodb:
