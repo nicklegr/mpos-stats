@@ -4,6 +4,46 @@ p
   | MONA/JPY (BID) = 
   = yen(@mona_jpy_bid_low, 1)
 
+h2 balance
+p= "消費電力 = #{@gpu_watts}W"
+
+table.table style='width: 70%'
+  thead
+    tr
+      td 期間
+      td 稼働時間(h)
+      td 収入
+      td 従量電灯C
+      td 収益
+      td ENEOS
+      td 収益
+    tr
+      td month
+      td= @month_work_hours
+      td= "#{yen(@month_profit_yen)} (#{to_s(@month_profit_mona, 2)})"
+      td= yen(@month_electric_bill_tokyo)
+      td.profit= yen(@month_profit_yen - @month_electric_bill_tokyo)
+      td= yen(@month_electric_bill_eneos)
+      td.profit= yen(@month_profit_yen - @month_electric_bill_eneos)
+    tr
+      td week
+      td= @week_work_hours
+      td= "#{yen(@week_profit_yen)} (#{to_s(@week_profit_mona, 2)})"
+      td= yen(@week_electric_bill_tokyo)
+      td.profit= yen(@week_profit_yen - @week_electric_bill_tokyo)
+      td= yen(@week_electric_bill_eneos)
+      td.profit= yen(@week_profit_yen - @week_electric_bill_eneos)
+    tr
+      td day
+      td= @day_work_hours
+      td= "#{yen(@day_profit_yen)} (#{to_s(@day_profit_mona, 2)})"
+      td= yen(@day_electric_bill_tokyo)
+      td.profit= yen(@day_profit_yen - @day_electric_bill_tokyo)
+      td= yen(@day_electric_bill_eneos)
+      td.profit= yen(@day_profit_yen - @day_electric_bill_eneos)
+
+h2 log
+
 table.table style='width: 100%'
   thead
     tr
