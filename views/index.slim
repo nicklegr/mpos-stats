@@ -17,30 +17,15 @@ table.table style='width: 70%'
       td 収益
       td ENEOS
       td 収益
-    tr
-      td month
-      td= @month_work_hours
-      td= "#{yen(@month_profit_yen)} (#{to_s(@month_profit_mona, 2)})"
-      td= yen(@month_electric_bill_tokyo)
-      td.profit= yen(@month_profit_yen - @month_electric_bill_tokyo)
-      td= yen(@month_electric_bill_eneos)
-      td.profit= yen(@month_profit_yen - @month_electric_bill_eneos)
-    tr
-      td week
-      td= @week_work_hours
-      td= "#{yen(@week_profit_yen)} (#{to_s(@week_profit_mona, 2)})"
-      td= yen(@week_electric_bill_tokyo)
-      td.profit= yen(@week_profit_yen - @week_electric_bill_tokyo)
-      td= yen(@week_electric_bill_eneos)
-      td.profit= yen(@week_profit_yen - @week_electric_bill_eneos)
-    tr
-      td day
-      td= @day_work_hours
-      td= "#{yen(@day_profit_yen)} (#{to_s(@day_profit_mona, 2)})"
-      td= yen(@day_electric_bill_tokyo)
-      td.profit= yen(@day_profit_yen - @day_electric_bill_tokyo)
-      td= yen(@day_electric_bill_eneos)
-      td.profit= yen(@day_profit_yen - @day_electric_bill_eneos)
+    - @balance.each do |duration, data|
+      tr
+        td= duration.to_s
+        td= data[:work_hours]
+        td= "#{yen(data[:profit_yen])} (#{to_s(data[:profit_mona], 2)})"
+        td= yen(data[:electric_bill_tokyo])
+        td.profit= yen(data[:profit_yen] - data[:electric_bill_tokyo])
+        td= yen(data[:electric_bill_eneos])
+        td.profit= yen(data[:profit_yen] - data[:electric_bill_eneos])
 
 h2 log
 

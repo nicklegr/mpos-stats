@@ -7,12 +7,13 @@ Bundler.require(:default, :web)
 
 require_relative "db"
 
+UNIT_TOKYO = 30.02
+UNIT_ENEOS = 25.75
+
 get "/" do
   @mona_jpy_bid_low = 7.0
   @mona_jpy_bid_high = 8.0
   @gpu_watts = 120
-  unit_tokyo = 30.02
-  unit_eneos = 25.75
   gpu_threshold = 0.07
 
   @earnings = Earning.desc(:created_at).limit(360)
@@ -24,39 +25,21 @@ get "/" do
     .where(:created_at.gte => now - 1.months)
     .and(:hour.gte => gpu_threshold)
 
-  @month_work_hours = month_gpu_earnings.size()
-  @month_profit_mona = @month_work_hours > 0 ?
-    month_gpu_earnings.map{ |e| e.hour }.inject(:+) :
-    0
-  @month_profit_yen = @month_profit_mona * @mona_jpy_bid_low
-  @month_electric_bill_tokyo = electric_bill(@gpu_watts, @month_work_hours, unit_tokyo)
-  @month_electric_bill_eneos = electric_bill(@gpu_watts, @month_work_hours, unit_eneos)
-
   # 週
   week_gpu_earnings = Earning
     .where(:created_at.gte => now - 1.weeks)
     .and(:hour.gte => gpu_threshold)
-
-  @week_work_hours = week_gpu_earnings.size()
-  @week_profit_mona = @week_work_hours > 0 ?
-    week_gpu_earnings.map{ |e| e.hour }.inject(:+) :
-    0
-  @week_profit_yen = @week_profit_mona * @mona_jpy_bid_low
-  @week_electric_bill_tokyo = electric_bill(@gpu_watts, @week_work_hours, unit_tokyo)
-  @week_electric_bill_eneos = electric_bill(@gpu_watts, @week_work_hours, unit_eneos)
 
   # 日
   day_gpu_earnings = Earning
     .where(:created_at.gte => now - 1.days)
     .and(:hour.gte => gpu_threshold)
 
-  @day_work_hours = day_gpu_earnings.size()
-  @day_profit_mona = @day_work_hours > 0 ?
-    day_gpu_earnings.map{ |e| e.hour }.inject(:+) :
-    0
-  @day_profit_yen = @day_profit_mona * @mona_jpy_bid_low
-  @day_electric_bill_tokyo = electric_bill(@gpu_watts, @day_work_hours, unit_tokyo)
-  @day_electric_bill_eneos = electric_bill(@gpu_watts, @day_work_hours, unit_eneos)
+  @balance = {
+    :month => calc_balance(month_gpu_earnings, @mona_jpy_bid_low, @gpu_watts),
+    :week => calc_balance(week_gpu_earnings, @mona_jpy_bid_low, @gpu_watts),
+    :day => calc_balance(day_gpu_earnings, @mona_jpy_bid_low, @gpu_watts),
+  }
 
   slim :index
 end
@@ -72,5 +55,20 @@ helpers do
 
   def electric_bill(watt, hours, unit)
     (watt.to_f / 1000) * hours * unit
+  end
+
+  def calc_balance(earnings, mona_jpy, gpu_watts)
+    work_hours = earnings.size()
+    profit_mona = work_hours > 0 ?
+      earnings.map{ |e| e.hour }.inject(:+) :
+      0
+
+    {
+      :work_hours => work_hours,
+      :profit_mona => profit_mona,
+      :profit_yen => profit_mona * mona_jpy,
+      :electric_bill_tokyo => electric_bill(gpu_watts, work_hours, UNIT_TOKYO),
+      :electric_bill_eneos => electric_bill(gpu_watts, work_hours, UNIT_ENEOS),
+    }
   end
 end
