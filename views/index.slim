@@ -11,16 +11,16 @@ table.table style='width: 70%'
   thead
     tr
       td 期間
-      td 稼働時間(h)
+      td 稼働時間
       td 収入
-      td 従量電灯C
+      td 東京電力
       td 収益
       td ENEOS
       td 収益
     - @balance.each do |duration, data|
       tr
         td= duration.to_s
-        td= data[:work_hours]
+        td= "#{data[:work_hours]}h (#{data[:work_percent].to_i}%)"
         td= "#{yen(data[:profit_yen])} (#{to_s(data[:profit_mona], 2)})"
         td= yen(data[:electric_bill_tokyo])
         td.profit= yen(data[:profit_yen] - data[:electric_bill_tokyo])

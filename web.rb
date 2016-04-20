@@ -36,9 +36,9 @@ get "/" do
     .and(:hour.gte => gpu_threshold)
 
   @balance = {
-    :month => calc_balance(month_gpu_earnings, @mona_jpy_bid_low, @gpu_watts),
-    :week => calc_balance(week_gpu_earnings, @mona_jpy_bid_low, @gpu_watts),
-    :day => calc_balance(day_gpu_earnings, @mona_jpy_bid_low, @gpu_watts),
+    :month => calc_balance(month_gpu_earnings, 24 * 30, @mona_jpy_bid_low, @gpu_watts),
+    :week => calc_balance(week_gpu_earnings, 24 * 7, @mona_jpy_bid_low, @gpu_watts),
+    :day => calc_balance(day_gpu_earnings, 24, @mona_jpy_bid_low, @gpu_watts),
   }
 
   slim :index
@@ -57,7 +57,7 @@ helpers do
     (watt.to_f / 1000) * hours * unit
   end
 
-  def calc_balance(earnings, mona_jpy, gpu_watts)
+  def calc_balance(earnings, full_hours, mona_jpy, gpu_watts)
     work_hours = earnings.size()
     profit_mona = work_hours > 0 ?
       earnings.map{ |e| e.hour }.inject(:+) :
@@ -65,6 +65,7 @@ helpers do
 
     {
       :work_hours => work_hours,
+      :work_percent => 100.0 * work_hours / full_hours,
       :profit_mona => profit_mona,
       :profit_yen => profit_mona * mona_jpy,
       :electric_bill_tokyo => electric_bill(gpu_watts, work_hours, UNIT_TOKYO),
