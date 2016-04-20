@@ -7,12 +7,11 @@ p
 h2 balance
 p= "消費電力 = #{@gpu_watts}W"
 
-table.table style='width: 90%'
+table.table style='float: left; width: 60%'
   thead
     tr
       td
       td colspan="6" 実測
-      td colspan="3" 100%稼働予測
     tr
       td 期間
       td 稼働時間
@@ -22,9 +21,6 @@ table.table style='width: 90%'
       td ENEOS
       td 収益
 
-      td 収入
-      td ENEOS
-      td 収益
   - @balance.each do |duration, data|
     tr
       td= duration.to_s
@@ -35,11 +31,21 @@ table.table style='width: 90%'
       td= yen(data[:electric_bill_eneos])
       td.profit= yen(data[:profit_yen] - data[:electric_bill_eneos])
 
+table.table style='float: left; width: 30%; margin-left: 5%;'
+  thead
+    tr
+      td colspan="3" 100%稼働予測
+    tr
+      td 収入
+      td ENEOS
+      td 収益
+  - @balance.each do |duration, data|
+    tr
       td= yen(data[:full_profit_yen])
       td= yen(data[:full_electric_bill_eneos])
       td.profit= yen(data[:full_profit_yen] - data[:full_electric_bill_eneos])
 
-h2 log
+h2 style="clear: left;" log
 
 table.table style='width: 100%'
   thead
