@@ -9,11 +9,13 @@ require_relative "db"
 
 UNIT_TOKYO = 30.02
 UNIT_ENEOS = 25.75
+MONA_JPY = 7.0
+WATTS = 120
 
 get "/" do
-  @mona_jpy_bid_low = 7.0
+  @mona_jpy_bid_low = params[:mona_jpy].try(:to_f) || MONA_JPY
   @mona_jpy_bid_high = 8.0
-  @gpu_watts = 120
+  @gpu_watts = params[:watts].try(:to_i) || WATTS
   gpu_threshold = 0.07
 
   @earnings = Earning.desc(:created_at).limit(360)

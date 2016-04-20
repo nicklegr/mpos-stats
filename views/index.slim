@@ -1,11 +1,16 @@
 h1 monacoin
 
-p
-  | MONA/JPY (BID) = 
-  = yen(@mona_jpy_bid_low, 1)
+form action="/" method="get"
+  p
+    | MONA/JPY (BID) = ¥ 
+    input name="mona_jpy" value="#{@mona_jpy_bid_low}" size="5"
+  p
+    | 消費電力 = 
+    input name="watts" value="#{@gpu_watts}" size="5"
+    | W
+  input type="submit" style="display: none;"
 
 h2 balance
-p= "消費電力 = #{@gpu_watts}W"
 
 table.table style='float: left; width: 60%'
   thead
