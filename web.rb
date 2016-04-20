@@ -62,14 +62,19 @@ helpers do
     profit_mona = work_hours > 0 ?
       earnings.map{ |e| e.hour }.inject(:+) :
       0
+    work_rate = work_hours.to_f / full_hours
+    electric_bill_tokyo = electric_bill(gpu_watts, work_hours, UNIT_TOKYO)
+    electric_bill_eneos = electric_bill(gpu_watts, work_hours, UNIT_ENEOS)
 
     {
       :work_hours => work_hours,
-      :work_percent => 100.0 * work_hours / full_hours,
+      :work_percent => 100.0 * work_rate,
       :profit_mona => profit_mona,
       :profit_yen => profit_mona * mona_jpy,
-      :electric_bill_tokyo => electric_bill(gpu_watts, work_hours, UNIT_TOKYO),
-      :electric_bill_eneos => electric_bill(gpu_watts, work_hours, UNIT_ENEOS),
+      :electric_bill_tokyo => electric_bill_tokyo,
+      :electric_bill_eneos => electric_bill_eneos,
+      :full_profit_yen => profit_mona * mona_jpy / work_rate,
+      :full_electric_bill_eneos => electric_bill_eneos / work_rate,
     }
   end
 end
